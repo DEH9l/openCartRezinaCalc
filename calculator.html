@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        p.form{
+            text-align:center;
+            margin:auto;
+            font-size: 2rem;
+            color: red;
+            padding: 10px 0;
+        }
+        input, select{
+            height:25px;
+            width:210px;
+            margin: 1rem 0;
+            border-bottom: 1px solid black;
+            border-bottom-width: 1px;
+            border-left-width: 0;
+            border-top-width: 0;
+            border-right-width: 0;
+        }
+        input:hover,select:hover{
+            outline: none;
+            border-bottom: 1px solid black;
+        }
+        input:focus,select:focus{
+            outline: none;
+            border-bottom: 1px solid black;
+        }
+    </style>
+</head>
+
+<div style="margin:auto; text-align: center;"><p style="text-align: center;font-size: 2rem;font-style: italic; text-align:center; ">Просчёт стоимости резины</p>
+    <p class="msonormal">
+        <input type="text" class="dlinna" placeholder="Высота резины в сантиметрах">&nbsp;
+        <input type="text" class="shirina" placeholder="Ширина резины в сантиметрах">&nbsp;
+        <select onchange="shkot()" id="rezprofile">&nbsp; &nbsp; &nbsp;<option value="0">Выберите профиль резины</option>&nbsp; &nbsp; &nbsp;<option value="2.4">Профиль NR</option>&nbsp; &nbsp; &nbsp;<option value="2.5">Профиль SN</option>&nbsp; &nbsp; &nbsp;<option value="1.9">Профиль БМ</option>&nbsp; &nbsp; &nbsp;<option value="2.4">Профиль ГР</option>&nbsp; &nbsp; &nbsp;<option value="2.3">Профиль СТ</option>&nbsp;</select></p>
+    <div style="display: flex; flex-direction: column; justify-content: space-around">
+        <p class="form"></p>
+        <button onclick="raschet()" class="btn-zakaza" style="display:none;color: #00ff43; font-weight: bolder;border-radius: 40px;font-style: italic;font-size: 2rem;background: transparent;margin: auto auto 20px;">Купить</button>
+    </div>
+
+
+    <p style="font-size:2rem;padding-top: 20px;"><span style="font-weight:2.5rem; color:red;">1.</span>Мерять резину необходимо по наружному углу.</p>
+    <img src="/image/catalog/Rezina_uplotnitel/055884-200x200.jpg" style="width: 200px; display: block; margin:auto;">
+    <p style="font-size:2rem;"><span style="font-weight:2.5rem; color:red;">2.</span>Профиль необходимо выбрать из представленных ниже профилей.</p></div>
+
+
+<script>
+    let rezVisota = document.getElementsByClassName('dlinna')[0];
+    let rezShirina = document.getElementsByClassName('shirina')[0];
+    let profile = document.getElementById('rezprofile');
+    let testBTN = document.getElementsByClassName('btn-zakaza')[0];
+    function raschet() {
+        if (profile.selectedIndex === 1) {
+            cart.add('4437', 'productpage', get_cart_quantity('4437', '.row-price'));
+        } else if (profile.selectedIndex === 2) {
+            cart.add('4454', 'productpage', get_cart_quantity('4454', '.row-price'));
+        } else if (profile.selectedIndex === 3) {
+            cart.add('3693', 'productpage', get_cart_quantity('3693', '.row-price'));
+        } else if (profile.selectedIndex === 4) {
+            cart.add('3692', 'productpage', get_cart_quantity('3692', '.row-price'));
+        } else if (profile.selectedIndex === 5) {
+            cart.add('3691', 'productpage', get_cart_quantity('3691', '.row-price'));
+        }
+    }
+    function clearValue(arr) {
+        arr = arr.split('');
+        arr.map(item => {
+            if (item === ',' || item === '/') {
+                arr.splice(arr.indexOf(item), 1, '.')
+            }
+        });
+        arr.map((item, index,arr) =>{
+            if(arr.indexOf(item) !== index && item === '.'){
+                delete arr[arr.indexOf(item)]
+            }
+        });
+        return Number(arr.join(''));
+    }
+    let shkot = () => {
+        if (rezVisota.value.length === 0) {
+            return document.getElementsByClassName('form')[0].innerHTML = 'Задайте высоту резины';
+        }
+        else if(rezShirina.value.length === 0) {
+            return document.getElementsByClassName('form')[0].innerHTML = 'Задайте ширину резины';
+        }
+        else if (profile.selectedIndex === 0) {
+            return document.getElementsByClassName('form')[0].innerHTML = 'Выберите профиль резины';
+        }
+        else if(isNaN(clearValue(rezShirina.value)) === true || isNaN(clearValue(rezVisota.value)) === true ){
+            document.getElementsByClassName('form')[0].innerHTML = 'Калькулятор принимает только цифры!';
+        }
+        else{
+            if(testBTN.style.display = 'none') {
+                testBTN.style.display = 'block';
+            }
+            document.getElementsByClassName('form')[0].innerHTML = `${Math.round((clearValue(rezShirina.value) + clearValue(rezVisota.value))* profile.value)} грн`;
+        }
+    };
+
+</script>
+</html>
